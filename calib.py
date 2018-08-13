@@ -8,6 +8,11 @@ criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 images = glob.glob('left/*.jpg')
 
 def find_points():
+    """
+    find the 3D points and corresponding 2D points of corners in the chess board
+    :return: 3D object points in the world and 2D image points in the image plane
+    """
+
     # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
     objp = np.zeros((6 * 7, 3), np.float32)
     objp[:, :2] = np.mgrid[0:7, 0:6].T.reshape(-1, 2)  # row by row, left to right in every row, z value defines 0
@@ -34,12 +39,25 @@ def find_points():
     return objpoints, imgpoints, imageSize
 
 def calibration():
+    """
+    using found points to calibrate
+    :return:
+    """
     objpoints, imgpoints, imageSize = find_points()
     ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, imageSize, None, None)
     return ret, mtx, dist, rvecs, tvecs
 
 
 def undistortion(mtx, dist, imgname, outputname=None):
+    """
+    using calibration parameters to undistort an image
+    :param mtx: camera matrix
+    :param dist: distortion coefficients
+    :param imgname: the image file to be undistorted
+    :param outputname: the output file to be show undistortion result
+    :return:
+    """
+
     img = cv2.imread(imgname)
     h, w = img.shape[:2]
     newcameramtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w, h), 1, (w, h))
