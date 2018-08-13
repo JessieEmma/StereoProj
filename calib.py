@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 import glob
+import os
 
 # termination criteria
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
@@ -38,7 +39,7 @@ def calibration():
     return ret, mtx, dist, rvecs, tvecs
 
 
-def undistortion(mtx, dist, imgname, outputname):
+def undistortion(mtx, dist, imgname, outputname=None):
     img = cv2.imread(imgname)
     h, w = img.shape[:2]
     newcameramtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w, h), 1, (w, h))
@@ -48,8 +49,12 @@ def undistortion(mtx, dist, imgname, outputname):
     # crop and save the image
     x, y, w, h = roi
     dst = dst[y:y + h, x:x + w]
+    if (outputname == None):
+        if (not os.path.exists("result")):
+            os.makedirs("result")
+        outputname = "result/"+ imgname.split("/")[1].split(".")[0]+"_undistortion.png"
     cv2.imwrite(outputname, dst)
 
 if __name__ == "__main__":
     ret, mtx, dist, rvecs, tvecs = calibration()
-    undistortion(mtx, dist, "left/left01.jpg", "calib_result01.png")
+    undistortion(mtx, dist, "left/left01.jpg")
