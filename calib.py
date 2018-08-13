@@ -38,8 +38,7 @@ def calibration():
     return ret, mtx, dist, rvecs, tvecs
 
 
-def undistortion(imgname, outputname):
-    ret, mtx, dist, rvecs, tvecs = calibration()
+def undistortion(mtx, dist, imgname, outputname):
     img = cv2.imread(imgname)
     h, w = img.shape[:2]
     newcameramtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w, h), 1, (w, h))
@@ -52,4 +51,5 @@ def undistortion(imgname, outputname):
     cv2.imwrite(outputname, dst)
 
 if __name__ == "__main__":
-    undistortion("left/left01.jpg", "calib_result01.png")
+    ret, mtx, dist, rvecs, tvecs = calibration()
+    undistortion(mtx, dist, "left/left01.jpg", "calib_result01.png")
