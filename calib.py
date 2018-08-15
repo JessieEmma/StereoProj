@@ -33,6 +33,7 @@ def find_points():
             objpoints.append(objp)
 
             corners2 = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
+            corners2 = np.squeeze(corners2, axis=1) # Remove single-dimensional of axix 1
             imgpoints.append(corners2)  # add the corner points corresponding to the 3D points
 
     imageSize = gray.shape[::-1]
@@ -75,4 +76,12 @@ def undistortion(mtx, dist, imgname, outputname=None):
 
 if __name__ == "__main__":
     ret, mtx, dist, rvecs, tvecs = calibration()
+    print("camera matrix is ")
+    print(mtx)
+    print("distortion coeffients is ")
+    print(dist)
+    print("rotation matrix is ")
+    print(rvecs)
+    print("translation matrix is ")
+    print(tvecs)
     undistortion(mtx, dist, "left/left01.jpg")
