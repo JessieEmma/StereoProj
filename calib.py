@@ -14,8 +14,8 @@ def find_points():
     """
 
     # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
-    objp = np.zeros((6 * 7, 3), np.float32)
-    objp[:, :2] = np.mgrid[0:7, 0:6].T.reshape(-1, 2)  # row by row, left to right in every row, z value defines 0
+    objp = np.zeros((6 * 9, 3), np.float32)
+    objp[:, :2] = np.mgrid[0:9, 0:6].T.reshape(-1, 2)  # row by row, left to right in every row, z value defines 0
 
     # Arrays to store object points and image points from all the images.
     objpoints = []  # 3d point in real world space
@@ -26,15 +26,13 @@ def find_points():
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
         # Find the chess board corners
-        ret, corners = cv2.findChessboardCorners(gray, (7, 6))
+        ret, corners = cv2.findChessboardCorners(gray, (9, 6))
 
-        # If found, add object points, image points (after refining them)
-        if ret == True:
-            objpoints.append(objp)
+        corners2 = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
+        corners2 = np.squeeze(corners2, axis=1) # Remove single-dimensional of axix 1
+        imgpoints.append(corners2)  # add the corner points corresponding to the 3D points
 
-            corners2 = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
-            corners2 = np.squeeze(corners2, axis=1) # Remove single-dimensional of axix 1
-            imgpoints.append(corners2)  # add the corner points corresponding to the 3D points
+        objpoints.append(objp)
 
     imageSize = gray.shape[::-1]
     return objpoints, imgpoints, imageSize
