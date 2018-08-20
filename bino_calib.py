@@ -35,6 +35,11 @@ def find_points(img_path):
     return imgpoints, imageSize, image_num
 
 def calib_two():
+    """
+    Use two-camera recorded photos to get the position relationo of two camera
+    :return: camera matrix and distrotion coefficients of the two, and the rotation matrix and translation from the left to the right,
+    the essential matrix and foundamental matrix
+    """
     objpoints = []  # 3d point in real world space
 
     # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
@@ -53,10 +58,10 @@ def calib_two():
 
     ret, mtx1, dist1, mtx2, dist2, R, t, E, F = cv2.stereoCalibrate(objpoints, left_imgpoints, right_imgpoints, None, None, None, None, left_image_size, flags=flags)
 
-    return mtx1, dist1, mtx2, dist2, R, t, E, F
+    return mtx1, dist1, mtx2, dist2, R, t, E, F, left_image_size
 
 if __name__ == '__main__':
-    mtx1, dist1, mtx2, dist2, R, t, E, F = calib_two()
+    mtx1, dist1, mtx2, dist2, R, t, E, F, image_size = calib_two()
     print("camera matrix of left is ")
     print(mtx1)
     print("distortion coeffients of left is ")
