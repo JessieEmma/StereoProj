@@ -1,11 +1,11 @@
-import numpy as np
-import cv2
 import glob
 import os
+import cv2
+import numpy as np
 
 # termination criteria
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
-images = glob.glob('left/*.jpg')
+images = glob.glob('../left/*.jpg')
 
 def find_points():
     """
