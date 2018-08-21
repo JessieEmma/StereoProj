@@ -5,7 +5,7 @@ import numpy as np
 
 # termination criteria
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
-images = glob.glob('left/*.jpg')
+images = glob.glob('../left/*.jpg')
 
 def find_points():
     """
@@ -67,9 +67,9 @@ def undistortion(mtx, dist, imgname, outputname=None):
     x, y, w, h = roi
     dst = dst[y:y + h, x:x + w]
     if (outputname == None):
-        if (not os.path.exists("result")):
-            os.makedirs("result")
-        outputname = "result/"+ imgname.split("/")[1].split(".")[0]+"_undistortion.png"
+        if (not os.path.exists("../result")):
+            os.makedirs("../result")
+        outputname = "../result/"+ imgname.split("/")[1].split(".")[0]+"_undistortion.png"
     cv2.imwrite(outputname, dst)
 
 if __name__ == "__main__":
@@ -82,4 +82,4 @@ if __name__ == "__main__":
     print(rvecs)
     print("translation matrix is ")
     print(tvecs)
-    undistortion(mtx, dist, "left/left01.jpg")
+    undistortion(mtx, dist, "../left/left01.jpg")
