@@ -30,6 +30,7 @@ def recti(is_show=True):
         img_src = cv2.imread(left_image)
         img_src_gray = cv2.cvtColor(img_src, cv2.COLOR_BGR2GRAY)
 
+        # undistort the image
         img_dst = cv2.undistort(img_src_gray, mtx1, dist1)
 
         if is_show:
@@ -40,6 +41,7 @@ def recti(is_show=True):
         img_src = cv2.imread(right_image)
         img_src_gray = cv2.cvtColor(img_src, cv2.COLOR_BGR2GRAY)
 
+        # undistort the image
         img_dst = cv2.undistort(img_src_gray, mtx2, dist2)
 
         if is_show:
