@@ -1,6 +1,7 @@
-import cv2
-import bino_calib
 import glob
+import cv2
+from BinocularBasics import bino_calib
+
 
 def undistortion(img_src, mtx, dist, R, new_mtx, image_size):
     map1, map2 = cv2.initUndistortRectifyMap(mtx, dist, R, new_mtx, image_size, cv2.CV_32FC1)
@@ -9,6 +10,12 @@ def undistortion(img_src, mtx, dist, R, new_mtx, image_size):
     return dst
 
 def recti(is_show=True):
+    """
+    Rectify the two-direction images
+    :param is_show: choose to show images or not
+    :return: the baseline of horizontal strereo
+    so that each pixel's epipolar line is horizontal and at the same vertical position as that pixel.
+    """
     mtx1, dist1, mtx2, dist2, R, t, E, F, image_size = bino_calib.calib_two()
     print("matrix of camera 1")
     print(mtx1)
@@ -50,5 +57,13 @@ def recti(is_show=True):
 
         cv2.destroyAllWindows()
 
+    b = (P1[0, 3] - P2[0, 3])/P1[0, 0]
+    return b
+
+
+
 if __name__ == "__main__":
-    recti()
+    # b = recti()
+    b = recti(is_show=False)
+    print("The b of baseline (b, 0, 0) is")
+    print(b)
