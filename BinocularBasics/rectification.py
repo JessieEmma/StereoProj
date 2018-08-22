@@ -11,7 +11,7 @@ def undistortion(src, mtx, dist, R, P, image_size):
     :param R:
     :param P:
     :param image_size:
-    :return:
+    :return: undistorted image by rectified matrix
     """
     map1, map2 = cv2.initUndistortRectifyMap(mtx, dist, R, P, image_size, cv2.CV_16SC2)
 
