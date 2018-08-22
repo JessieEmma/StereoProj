@@ -2,8 +2,8 @@ import cv2
 import numpy as np
 import glob
 
-left_img_path = 'left/*.jpg'
-right_img_path = 'right/*.jpg'
+left_img_path = '../left/*.jpg'
+right_img_path = '../right/*.jpg'
 
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.1)
 

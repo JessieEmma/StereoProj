@@ -2,6 +2,23 @@ import glob
 import cv2
 from BinocularBasics import bino_calib
 
+def undistortion(src, mtx, dist, R, P, image_size):
+    """
+    undistort the image by using rectified parameters
+    :param src:
+    :param mtx:
+    :param dist:
+    :param R:
+    :param P:
+    :param image_size:
+    :return:
+    """
+    map1, map2 = cv2.initUndistortRectifyMap(mtx, dist, R, P, image_size, cv2.CV_16SC2)
+
+    dst = cv2.remap(src, map1, map2, cv2.INTER_LINEAR)
+
+    return dst
+
 def recti(is_show=True):
     """
     Rectify the two-direction images
@@ -26,30 +43,32 @@ def recti(is_show=True):
     left_images = glob.glob(bino_calib.left_img_path)
     right_images = glob.glob(bino_calib.right_img_path)
 
-    for (left_image, right_image) in zip(left_images, right_images):
-        img_src = cv2.imread(left_image)
-        img_src_gray = cv2.cvtColor(img_src, cv2.COLOR_BGR2GRAY)
+    choose_image = 1
+    left_image = left_images[0]
+    right_image = right_images[0]
+    img_src = cv2.imread(left_image)
+    img_src_gray = cv2.cvtColor(img_src, cv2.COLOR_BGR2GRAY)
 
-        # undistort the image
-        img_dst = cv2.undistort(img_src_gray, mtx1, dist1)
+    # undistort the image
+    img_dst = undistortion(img_src_gray, mtx1, dist1, R1, P1, image_size)
 
-        if is_show:
-            cv2.imshow(left_image, img_src_gray)
-            cv2.imshow("rectified_"+left_image, img_dst)
-            cv2.waitKey(0)
+    if is_show:
+        cv2.imshow(left_image, img_src_gray)
+        cv2.imshow("rectified_" + left_image, img_dst)
+        cv2.waitKey(0)
 
-        img_src = cv2.imread(right_image)
-        img_src_gray = cv2.cvtColor(img_src, cv2.COLOR_BGR2GRAY)
+    img_src = cv2.imread(right_image)
+    img_src_gray = cv2.cvtColor(img_src, cv2.COLOR_BGR2GRAY)
 
-        # undistort the image
-        img_dst = cv2.undistort(img_src_gray, mtx2, dist2)
+    # undistort the image
+    img_dst = undistortion(img_src_gray, mtx2, dist2, R2, P2, image_size)
 
-        if is_show:
-            cv2.imshow(right_image, img_src_gray)
-            cv2.imshow("rectified_"+left_image, img_dst)
-            cv2.waitKey(0)
+    if is_show:
+        cv2.imshow(right_image, img_src_gray)
+        cv2.imshow("rectified_" + left_image, img_dst)
+        cv2.waitKey(0)
 
-        cv2.destroyAllWindows()
+    cv2.destroyAllWindows()
 
     b = (P1[0, 3] - P2[0, 3])/P1[0, 0]
     return b
