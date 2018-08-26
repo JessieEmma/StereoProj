@@ -72,6 +72,44 @@ def undistortion(mtx, dist, imgname, outputname=None):
         outputname = "../result/"+ imgname.split("/")[1].split(".")[0]+"_undistortion.png"
     cv2.imwrite(outputname, dst)
 
+def undistortPoint(u, v, k1, k2, p1, p2, repeat, Cx, Cy, fx, fy):
+    """
+    Compute the undistorted coordinate from the distorted point(u, v)
+    :param u: x-axix of the distorted image point
+    :param v: y-axix of the distorted image point
+    :param k1: radial coefficient
+    :param k2: radial coefficient
+    :param p1: tangential coefficient
+    :param p2: tangential coefficient
+    :param repeat: the times of iteration to compute
+    :param Cx: x-axis value of optical center
+    :param Cy: y-axis value of optical center
+    :param fx: focal length
+    :param fy: focal length
+    :return: the undistorted image point
+    """
+
+    distortx = (u-Cx)/fx
+    distorty = (v-Cy)/fy
+
+    undistortx = distortx
+    undistorty = distorty
+
+    for i in range(repeat):
+        r = undistortx ** 2 + undistorty ** 2
+        radial = 1 + k1 * r + k2 * (r**2)
+        tangentialx = 2*p1*undistortx*undistorty + p2*(r+2*undistortx)
+        tangentialy = p1*(r+2*undistorty) + 2*p2*undistortx*undistorty
+
+        undistortx = (distortx - tangentialx)/radial
+        undistorty = (distorty - tangentialy)/radial
+
+    u1 = undistortx*fx + Cx
+    v1 = undistorty*fy + Cy
+
+    return u1, v1
+
+
 if __name__ == "__main__":
     ret, mtx, dist, rvecs, tvecs = calibration()
     print("camera matrix is ")
