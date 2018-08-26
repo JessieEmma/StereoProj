@@ -14,8 +14,8 @@ This repository contains the code for "Stereo Project".
 1. Set up a new virtual environmrnt 
 
 $ virtual venv   <tab><tab> # venv :the name of virtual environment directory name
-2. Choose an interpreter for the environment
 
+2. Choose an interpreter for the environment
 
 $ virtualenv -p /usr/bin/python2.7 venv　　<tab><tab>　　# -p parameter determines the path of Python interpreter
 
@@ -38,6 +38,8 @@ $ pip install -r requirement.txt <tab><tab> # -r parameter is the path of requir
 ## Stereo Matching
 ### [disparity.py](https://github.com/JessieEmma/StereoProj/blob/master/StereoMatching/disparity.py) contains disparity computation by OpenCV functions based on SGBM for Q17.
 
-
-
+## Images
+### [left](https://github.com/JessieEmma/StereoProj/tree/master/left) directory contains the images taken by left camera
+### [right](https://github.com/JessieEmma/StereoProj/tree/master/right) directory contains the images taken by right camera
+### result directory will save the result images 
  
