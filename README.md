@@ -12,21 +12,21 @@ This repository contains the code for "Stereo Project".
 
 ### Vitual Environment setup
 1. Set up a new virtual environmrnt 
-
+```
 $ virtual venv   <tab><tab> # venv :the name of virtual environment directory name
-
+```
 2. Choose an interpreter for the environment
-
+```
 $ virtualenv -p /usr/bin/python2.7 venv　　<tab><tab>　　# -p parameter determines the path of Python interpreter
-
+```
 3. Start use this environment
-
+```
 $ source venv/bin/activate　 <tab><tab> # source command
-
+```
 4. Install the required packages for this project
-
+```
 $ pip install -r requirement.txt     <tab><tab>  # -r parameter is the path of requirements.txt of this project
-
+```
 ## Camera Basics 
 [calib.py](https://github.com/JessieEmma/StereoProj/blob/master/CameraBasics/calib.py) contains calibration of the camera with OpenCV functions for Q6 and Q7.
  ```
